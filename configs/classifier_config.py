@@ -1,0 +1,10 @@
+AET_PATH = './data/pretrained_aet_model.hdf5'
+THRESHOLDS_CSV = './data/dataset_fold_5.csv'
+INPUT_SHAPE = (224, 224, 3)
+BATCH_SIZE = 12
+EPOCHS = 10000
+LOG_DIR = './logs'
+SGDR_MIN_LR = 0.000001
+SGDR_MAX_LR = 0.0001
+SGDR_DECAY = 0.90
+SGDR_CYCLE_LENGTH = 30

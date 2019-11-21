@@ -1,0 +1,9 @@
+COCO_PATH = 'E:/_________COCO_________' ## Change this to your MSCOCO directory
+INPUT_SHAPE = (224, 224, 3)
+BATCH_SIZE = 12
+EPOCHS = 90
+LOG_DIR = './logs'
+SGDR_MIN_LR = 0.000001
+SGDR_MAX_LR = 0.0001
+SGDR_DECAY = 0.90
+SGDR_CYCLE_LENGTH = 30
