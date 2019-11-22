@@ -9,6 +9,7 @@ import matplotlib.gridspec as gridspec
 
 from configs import classifier_config
 
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Perform inference using trained models')
     parser.add_argument('--model', help='Path to trained threshold classifier model')
@@ -17,6 +18,8 @@ def parse_args():
         - displays ground truth masks, as well as predictions. Do not use if already using --image.''',
         choices=['train', 'val']
         )
+    parser.add_argument('--save_images', help='''Specify folder to render result images to. 
+        If not specified images will not be saved, but shown on-screen instead''')
     return parser.parse_args()
 
 
@@ -53,7 +56,6 @@ def predict_dataset(model, dataset_name):
     generator = CompositeSequence(classifier_config.THRESHOLDS_CSV, batch_size=1, train_val=dataset_name)
     results = []
     for comp in generator.composites:
-        print(os.path.basename(comp.image_path))
         image_results = [] 
         image = comp.image
         mask = comp.mask
@@ -69,11 +71,11 @@ def predict_dataset(model, dataset_name):
     return results
 
 
-def visualise_gt(results):
+def visualise_gt(results, outdir=None):
     n_composites = len(results)
     n_offsets = len(results[0])
     n_subimages = len(results[0][0])
-    for comp in results:
+    for idx, comp in enumerate(results):
         plt.figure(figsize=(20, 4))
         plt.margins(y=20)
         grid = gridspec.GridSpec(n_subimages+1, n_offsets, top=0.95, bottom=0.3)
@@ -94,17 +96,22 @@ def visualise_gt(results):
         plt.ylim([0, 1])
         plt.ylabel('F1 score')
         plt.xlabel('Exposure offset ($stops$)')
+        
         plt.legend(loc='lower right')
-        plt.show()
+        if outdir is not None:
+            utils.mkdir(outdir)
+            plt.savefig(os.path.join(outdir, f'image_{idx}.png'), dpi=300)
+        else:
+            plt.show()
 
 
 def main(args):
     model, input_shape = utils.load_model_get_shape(args.model)
-    print('Loaded model') 
+    print(f'Loaded model {args.model}') 
     if args.dataset is not None:
-        print('Predicting dataset')
+        print('Running inference on validation dataset')
         results = predict_dataset(model, args.dataset)
-        visualise_gt(results)
+        visualise_gt(results, args.save_images)
     elif os.path.isdir(args.image):
         results = predict_folder(model, args.image)
     else: 

@@ -84,8 +84,6 @@ class CompositeSequence(Sequence):
             self.composites = self.composites[int(0.9*len(self.composites)):]
             print(f'Number of validation composites: {len(self.composites)}')
 
-        [print(comp.image_path for comp in self.composites)]
-
     def _prepare_composites(self):
         composites = []
         for idx, dataset_row in pd.read_csv(self.thresholds_csv).iterrows():
