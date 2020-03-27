@@ -1,3 +1,25 @@
+# Overview
+<img src="https://github.com/dmt-lab/learning-to-observe/blob/master/github_image.png" width="400px">
+
+This repository contains the code and models associated with our CVPR publication titled: *"Learning to Observe: Approximating Human Perceptual Thresholds for Detection of Suprathreshold Image Transformations"*
+
+**Learning to Observe: Approximating Human Perceptual Thresholds for Detection of Suprathreshold Image Transformations** <BR>
+Alan Dolhasz, Carlo Harvey, Ian Williams <BR>
+in CVPR 2020 <BR>
+
+```
+@article{dolhasz2020learning,
+  title={Learning to Observe: Approximating Human Perceptual Thresholds for Detection of Suprathreshold Image Transformations},
+  author={Dolhasz, Alan and Harvey, Carlo and Williams, Ian},
+  journal={CVPR},
+  year={2020}
+}
+```
+
+Preprint: https://arxiv.org/pdf/1912.06433.pdf
+
+Please refer to the paper for more details. Instructions on how to download and use our pretrained models can be found below.
+
 # Installation & Setup
 
 1. Setup a conda environment:
