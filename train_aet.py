@@ -8,7 +8,6 @@ from keras.callbacks import TensorBoard, ModelCheckpoint
 from utils.callbacks import SGDRScheduler
 from utils import utils
 
-from keras.utils import multi_gpu_model
 
 from configs import aet_config
 
@@ -37,8 +36,6 @@ coco_val_gen = CocoSequence(
 
 # Build model
 model = build_aet(input_shape=aet_config.INPUT_SHAPE)
-# Multi GPU
-model = multi_gpu_model(model)
 optimizer = Adam(0.0001)
 model.compile(
     optimizer,
