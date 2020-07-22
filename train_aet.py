@@ -8,6 +8,8 @@ from keras.callbacks import TensorBoard, ModelCheckpoint
 from utils.callbacks import SGDRScheduler
 from utils import utils
 
+from tensorflow.distribute import MirroredStrategy
+
 from configs import aet_config
 
 # Prep logdir
@@ -31,14 +33,19 @@ coco_val_gen = CocoSequence(
     data_dir=aet_config.COCO_PATH
     )
 
+
+# Multi GPU
+strategy = MirroredStrategy()
+
 # Build model
-model = build_aet(input_shape=aet_config.INPUT_SHAPE)
-optimizer = Adam(0.0001)
-model.compile(
-    optimizer,
-    loss=mse,
-    metrics=[mse, mae]
-)
+with strategy.scope():
+    model = build_aet(input_shape=aet_config.INPUT_SHAPE)
+    optimizer = Adam(0.0001)
+    model.compile(
+        optimizer,
+        loss=mse,
+        metrics=[mse, mae]
+    )
 
 # Prepare callbacks
 tb_cback = TensorBoard(log_dir=log_dir, batch_size=aet_config.BATCH_SIZE)
