@@ -34,11 +34,11 @@ coco_val_gen = CocoSequence(
     )
 
 
-# Multi GPU
-model = multi_gpu_model(model)
 
 # Build model
 model = build_aet(input_shape=aet_config.INPUT_SHAPE)
+# Multi GPU
+model = multi_gpu_model(model)
 optimizer = Adam(0.0001)
 model.compile(
     optimizer,
