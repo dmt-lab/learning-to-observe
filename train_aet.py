@@ -20,14 +20,14 @@ coco_train_gen = CocoSequence(
     batch_size=aet_config.BATCH_SIZE, 
     image_shape=aet_config.INPUT_SHAPE, 
     data_type='train2017', 
-    n_samples=100, 
+    n_samples=None, 
     data_dir=aet_config.COCO_PATH
     )
 coco_val_gen = CocoSequence(
     batch_size=aet_config.BATCH_SIZE, 
     image_shape=aet_config.INPUT_SHAPE, 
     data_type='val2017', 
-    n_samples=100, 
+    n_samples=None, 
     data_dir=aet_config.COCO_PATH
     )
 
