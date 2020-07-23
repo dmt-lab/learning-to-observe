@@ -7,7 +7,7 @@ from keras.metrics import mse, mae
 from keras.callbacks import TensorBoard, ModelCheckpoint
 from utils.callbacks import SGDRScheduler
 from utils import utils
-
+import sys
 
 from configs import aet_config
 
@@ -37,6 +37,10 @@ coco_val_gen = CocoSequence(
 # Build model
 model = build_aet(input_shape=aet_config.INPUT_SHAPE)
 optimizer = Adam(0.0001)
+
+if sys.argv[1]:
+    model.load_weights(sys.argv[1])
+
 model.compile(
     optimizer,
     loss=mse,
