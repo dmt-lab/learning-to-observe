@@ -1,6 +1,6 @@
-from keras.applications import VGG16
-from keras.layers import Conv2D, BatchNormalization, SpatialDropout2D, Activation, Concatenate, Input
-from keras.models import Model
+from tensorflow.keras.applications import VGG16
+from tensorflow.keras.layers import Conv2D, BatchNormalization, SpatialDropout2D, Activation, Concatenate, Input
+from tensorflow.keras.models import Model
 from models import building_blocks as bb
 
 vgg16_branches = ('block1_pool', 'block2_pool', 'block3_pool', 'block4_pool')

@@ -1,9 +1,9 @@
 # Test reguralisation
 import io
 from PIL import Image
-import keras
-from keras.callbacks import Callback
-import keras.backend as K
+import tensorflow.keras as keras
+from tensorflow.keras.callbacks import Callback
+import tensorflow.keras.backend as K
 import tensorflow as tf
 import numpy as np
 

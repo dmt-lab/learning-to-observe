@@ -1,5 +1,5 @@
-from keras.layers import SpatialDropout2D, Conv2D
-from keras.models import Model
+from tensorflow.keras.layers import SpatialDropout2D, Conv2D
+from tensorflow.keras.models import Model
 from utils import utils
 
 def freeze_layers(model, layer_name=None):
