@@ -58,7 +58,7 @@ with strategy.scope():
     aet.compile(opt, 'mse')
 
 gen = TfCocoDataset(data_dir='/home/dolhasz/coco', batch_size=16)
-val_gen = gen = TfCocoDataset(data_dir='/home/dolhasz/coco', batch_size=16, train=False)
+val_gen = TfCocoDataset(data_dir='/home/dolhasz/coco', batch_size=16, train=False)
 
 steps = tf.data.experimental.cardinality(gen).numpy()//aet_config.EPOCHS
 val_steps = tf.data.experimental.cardinality(val_gen).numpy()//aet_config.EPOCHS
