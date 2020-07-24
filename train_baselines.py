@@ -9,7 +9,7 @@ import random
 
 random.seed(42)
 np.random.seed(42)
-tf.set_random_seed(42)
+tf.random.set_seed(42)
 
 def upsampling_block(input_tensor, channels, skip=None):
     if skip is not None:
