@@ -2,7 +2,11 @@ import tensorflow as tf
 from generators.aet_generator import TfCocoDataset
 
 
-def upsampling_block(input_tensor, channels):
+def upsampling_block(input_tensor, channels, skip=None):
+    if skip is not None:
+        input_tensor = tf.keras.layers.Conv2D(channels, (1,1), padding='same')(input_tensor)
+        skip = tf.keras.layers.Conv2D(channels, (1,1), padding='same')(skip)
+        input_tensor = tf.keras.layers.Add()([input_tensor, skip])
     x = tf.keras.layers.UpSampling2D()(input_tensor)
     x = tf.keras.layers.Conv2D(channels, (4,4), padding='same')(x)
     x = tf.keras.layers.BatchNormalization()(x)
@@ -13,13 +17,16 @@ def upsampling_block(input_tensor, channels):
     return x
 
 
+skips = ['conv1_relu', 'conv2_block3_out', 'conv3_block4_out', 'conv4_block6_out', 'conv5_block3_out']
+
+
 model = tf.keras.applications.ResNet50(input_shape=(224,224,3), include_top=False)
 
-x = upsampling_block(model.output, 512)
-x = upsampling_block(x, 256)
-x = upsampling_block(x, 128)
-x = upsampling_block(x, 64)
-x = upsampling_block(x, 32)
+x = upsampling_block(model.output, 512, model.get_layer(skips[-1]).output)
+x = upsampling_block(x, 256, model.get_layer(skips[-2]).output)
+x = upsampling_block(x, 128, model.get_layer(skips[-3]).output)
+x = upsampling_block(x, 64, model.get_layer(skips[-4]).output)
+x = upsampling_block(x, 32, model.get_layer(skips[-5]).output)
 
 model = tf.keras.Model(model.input, x)
 model.summary()
@@ -37,6 +44,6 @@ aet = tf.keras.Model([i1, i2], x)
 aet.summary()
 aet.compile('Adam', 'mse')
 
-gen = TfCocoDataset()
+gen = TfCocoDataset(data_dir='/home/dolhasz/coco')
 
 aet.fit(gen)
