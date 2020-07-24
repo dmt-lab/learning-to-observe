@@ -5,8 +5,8 @@ import numpy as np
 import skimage.io as io
 from random import shuffle
 from pycocotools.coco import COCO
-from keras.utils import Sequence
-from keras.models import load_model
+from tensorflow.keras.utils import Sequence
+from tensorflow.keras.models import load_model
 from utils.utils import quick_composite, preprocess_input
 import matplotlib
 matplotlib.use('TkAgg')
