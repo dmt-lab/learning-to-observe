@@ -1,6 +1,6 @@
-COCO_PATH = 'E:/mscoco' ## Change this to your MSCOCO directory
+COCO_PATH = '/home/dolhasz/mscoco' ## Change this to your MSCOCO directory
 INPUT_SHAPE = (224, 224, 3)
-BATCH_SIZE = 12
+BATCH_SIZE = 12*3
 EPOCHS = 90
 LOG_DIR = './logs'
 SGDR_MIN_LR = 0.000001

@@ -57,8 +57,17 @@ with strategy.scope():
     opt = tf.keras.optimizers.Adam(lr=0.001)
     aet.compile(opt, 'mse')
 
-gen = TfCocoDataset(data_dir='/home/dolhasz/coco', batch_size=aet_config.BATCH_SIZE)
-val_gen = TfCocoDataset(data_dir='/home/dolhasz/coco', batch_size=aet_config.BATCH_SIZE, train=False)
+gen = TfCocoDataset(
+    data_dir='/home/dolhasz/coco', 
+    batch_size=aet_config.BATCH_SIZE, 
+    epochs=aet_config.EPOCHS
+)
+val_gen = TfCocoDataset(
+    data_dir='/home/dolhasz/coco', 
+    batch_size=aet_config.BATCH_SIZE, 
+    train=False, 
+    epochs=aet_config.EPOCHS
+)
 
 steps = tf.data.experimental.cardinality(gen).numpy()//aet_config.EPOCHS
 val_steps = tf.data.experimental.cardinality(val_gen).numpy()//aet_config.EPOCHS
