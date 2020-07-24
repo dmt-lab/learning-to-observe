@@ -42,8 +42,10 @@ x =  tf.keras.layers.Conv2D(1, (1,1), name='output', activation='linear', paddin
 
 aet = tf.keras.Model([i1, i2], x)
 aet.summary()
-aet.compile('Adam', 'mse')
 
-gen = TfCocoDataset(data_dir='/home/dolhasz/coco')
+opt = tf.keras.optimizers.Adam(lr=0.001)
+aet.compile(opt, 'mse')
+
+gen = TfCocoDataset(data_dir='/home/dolhasz/coco', batch_size=16)
 
 aet.fit(gen)
