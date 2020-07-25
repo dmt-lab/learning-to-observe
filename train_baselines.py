@@ -76,11 +76,20 @@ val_steps = tf.data.experimental.cardinality(val_gen).numpy()//aet_config.EPOCHS
 
 dt = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 tensorboard = tf.keras.callbacks.TensorBoard(log_dir=f'./logs/{dt}')
+reduce_lr = tf.keras.callbacks.ReduceLROnPlateau(
+    monitor='val_loss', 
+    factor=0.1, 
+    patience=10, 
+    verbose=1, 
+    mode='auto',
+    min_delta=0.0001, cooldown=0, min_lr=0.000001,)
+
+
 aet.fit(
     gen, 
     epochs=aet_config.EPOCHS,
     steps_per_epoch=steps, 
     validation_data=val_gen, 
     validation_steps=val_steps,
-    callbacks=[tensorboard]
+    callbacks=[tensorboard, reduce_lr]
 )
