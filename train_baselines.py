@@ -78,6 +78,7 @@ dt = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 tensorboard = tf.keras.callbacks.TensorBoard(log_dir=f'./logs/{dt}')
 aet.fit(
     gen, 
+    epochs=aet_config.EPOCHS,
     steps_per_epoch=steps, 
     validation_data=val_gen, 
     validation_steps=val_steps,
