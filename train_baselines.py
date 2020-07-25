@@ -1,11 +1,11 @@
 import os
 os.environ['TF_CUDNN_DETERMINISTIC']='1'
 import tensorflow as tf
-import tensorflow as tf
 from generators.aet_generator import TfCocoDataset
 from configs import aet_config
 import numpy as np
 import random
+import datetime
 
 random.seed(42)
 np.random.seed(42)
@@ -32,7 +32,8 @@ strategy = tf.distribute.MirroredStrategy()
 
 with strategy.scope():
     model = tf.keras.applications.ResNet50(input_shape=(224,224,3), include_top=False)
-
+    for layer in model.layers:
+        layer.trainable = False
     x = upsampling_block(model.output, 512, model.get_layer(skips[-1]).output)
     x = upsampling_block(x, 256, model.get_layer(skips[-2]).output)
     x = upsampling_block(x, 128, model.get_layer(skips[-3]).output)
@@ -57,6 +58,7 @@ with strategy.scope():
     opt = tf.keras.optimizers.Adam(lr=0.001)
     aet.compile(opt, 'mse')
 
+
 gen = TfCocoDataset(
     data_dir='/home/dolhasz/coco', 
     batch_size=aet_config.BATCH_SIZE, 
@@ -72,4 +74,12 @@ val_gen = TfCocoDataset(
 steps = tf.data.experimental.cardinality(gen).numpy()//aet_config.EPOCHS
 val_steps = tf.data.experimental.cardinality(val_gen).numpy()//aet_config.EPOCHS
 
-aet.fit(gen, steps_per_epoch=steps, validation_data=val_gen, validation_steps=val_steps)
+dt = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+tensorboard = tf.keras.callbacks.TensorBoard(log_dir=f'./logs/{dt}')
+aet.fit(
+    gen, 
+    steps_per_epoch=steps, 
+    validation_data=val_gen, 
+    validation_steps=val_steps,
+    callbacks=[tensorboard]
+)
