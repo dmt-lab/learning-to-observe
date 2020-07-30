@@ -106,8 +106,10 @@ class CocoSequence(Sequence):
         indices = self.x[idx * self.batch_size : (idx + 1) * self.batch_size]
         X, X2, Y = self._generate(indices)
         if X and X2 and Y:
-            X = preprocess_input(X[0])
-            X2 = preprocess_input(X2[0])
+            X = tf.keras.applications.resnet.preprocess_input(X[0])
+            X2 = tf.keras.applications.resnet.preprocess_input(X2[0])
+            # X = preprocess_input(X[0])
+            # X2 = preprocess_input(X2[0])
             # print(type(Y))
             batch_Y = np.array(Y[0]).reshape((224,224,1))
             return np.array(X), np.array(X2), batch_Y

@@ -1,3 +1,5 @@
+import os
+os.environ['TF_CUDNN_DETERMINISTIC']='1'
 import sys
 
 import numpy as np
@@ -12,6 +14,11 @@ from generators.aet_generator import CocoSequence, TfCocoDataset
 from models.aet import build_aet
 from utils import utils
 from utils.callbacks import SGDRScheduler
+import random
+
+random.seed(42)
+np.random.seed(42)
+tf.random.set_seed(42)
 
 # Prep logdir
 utils.mkdir(aet_config.LOG_DIR)
