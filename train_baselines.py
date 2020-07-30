@@ -31,9 +31,9 @@ skips = ['conv1_relu', 'conv2_block3_out', 'conv3_block4_out', 'conv4_block6_out
 strategy = tf.distribute.MirroredStrategy()
 
 with strategy.scope():
-    model = tf.keras.applications.ResNet50(input_shape=(224,224,3), include_top=False)
-    for layer in model.layers:
-        layer.trainable = False
+    model = tf.keras.applications.ResNet50(input_shape=(224,224,3), weights='imagenet', include_top=False)
+    #for layer in model.layers:
+    #    layer.trainable = False
     x = upsampling_block(model.output, 512, model.get_layer(skips[-1]).output)
     x = upsampling_block(x, 256, model.get_layer(skips[-2]).output)
     x = upsampling_block(x, 128, model.get_layer(skips[-3]).output)
@@ -49,13 +49,13 @@ with strategy.scope():
     x1 = model(i1)
     x2 = model(i2)
 
-    c = tf.keras.layers.Concatenate()([x1, x2])
+    c = tf.keras.layers.Concatenate(axis=-1)([x1, x2])
     x =  tf.keras.layers.Conv2D(1, (1,1), name='output', activation='linear', padding='same')(c)
 
     aet = tf.keras.Model([i1, i2], x)
     aet.summary()
 
-    opt = tf.keras.optimizers.Adam(lr=0.001)
+    opt = tf.keras.optimizers.Adam(lr=0.0001)
     aet.compile(opt, 'mse')
 
 
@@ -78,7 +78,7 @@ dt = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 tensorboard = tf.keras.callbacks.TensorBoard(log_dir=f'./logs/{dt}')
 reduce_lr = tf.keras.callbacks.ReduceLROnPlateau(
     monitor='val_loss', 
-    factor=0.1, 
+    factor=0.9, 
     patience=10, 
     verbose=1, 
     mode='auto',
