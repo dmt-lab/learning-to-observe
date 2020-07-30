@@ -21,7 +21,7 @@ with strat.scope():
 
     tf.nn.softmax(predictions).numpy()
 
-    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True, reduction=tf.keras.losses.Reduction.SUM)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True, reduction=tf.keras.losses.Reduction.NONE)
 
     loss_fn(y_train[:1], predictions).numpy()
 
@@ -30,7 +30,7 @@ with strat.scope():
                 metrics=['accuracy'])
 
 
-model.fit(x_train, y_train, epochs=100)
+model.fit(x_train, y_train, epochs=100, batch_size=512)
 
 model.evaluate(x_test,  y_test, verbose=2)
 

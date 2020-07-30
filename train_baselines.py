@@ -56,7 +56,7 @@ with strategy.scope():
     aet.summary()
 
     opt = tf.keras.optimizers.Adam(lr=0.0001)
-    aet.compile(opt, 'mse')
+    aet.compile(opt, tf.keras.losses.MeanSquaredError(reduction=tf.keras.losses.Reduction.NONE))
 
 
 gen = TfCocoDataset(

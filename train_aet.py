@@ -5,8 +5,8 @@ import sys
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.callbacks import ModelCheckpoint, TensorBoard
+from tensorflow.keras.metrics import mae
 from tensorflow.keras.losses import mse
-from tensorflow.keras.metrics import mae, mse
 from tensorflow.keras.optimizers import Adam
 
 from configs import aet_config
@@ -52,8 +52,8 @@ with strategy.scope():
 
     model.compile(
         optimizer,
-        loss=mse,
-        metrics=[mse, mae]
+        loss=tf.keras.losses.MeanSquaredError(reduction=tf.keras.losses.Reduction.NONE),
+        metrics=[mae]
     )
 
 steps = tf.data.experimental.cardinality(coco_train_gen).numpy()//aet_config.EPOCHS
