@@ -5,8 +5,8 @@ import numpy as np
 import skimage.io as io
 from random import shuffle
 from pycocotools.coco import COCO
-from keras.utils import Sequence
-from keras.models import load_model
+from tensorflow.keras.utils import Sequence
+from tensorflow.keras.models import load_model
 from utils.utils import quick_composite, preprocess_input
 import matplotlib
 matplotlib.use('TkAgg')
@@ -170,6 +170,20 @@ if __name__ == "__main__":
     ds = TfCocoDataset()
 
     for x in ds:
-        s = time.time()
-        print(x[0].shape)
-        print(f'Elapsed: {time.time()-s}')
+        x, y = x
+        x1, x2 = x
+        print(x1.shape)
+        print(x2.shape)
+        print(y.shape)
+
+        assert x1.shape == (32,224,224,3)
+        assert x2.shape == (32,224,224,3)
+        assert y.shape == (32,224,224,1)
+        # s = time.time()
+        # print(x[0][0].shape)
+        # print(x[0][1].shape)
+        # print(x[1].shape)
+        # assert x[0][0].shape == (32,224,224,3)
+        # assert x[0][1].shape == (32,224,224,3)
+        # assert x[1].shape == (32,224,224,1)
+        # # print(f'Elapsed: {time.time()-s}')
